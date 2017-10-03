@@ -1,4 +1,4 @@
-function sigma = calculateSigma(pathToSave, Imax, sigma_L, Cm, CVControl, CVError, numStim, CL, dt, nodeOut, dxOut, project)
+function sigma = calculateSigma(pathToSave, params, values, Imax, sigma_L, Cm, CVControl, CVError, numStim, CL, dt, nodeOut, dxOut, project)
 
 initialPath = pwd();
 
@@ -9,6 +9,16 @@ if(~isempty(file))
     sim_stat = load([pathToSave '/status.mat']);
 else
     sim_stat = struct();
+end
+
+if(isempty(params))
+  paramFile=false;
+else
+  paramFile=true;
+end
+
+if(paramFile)
+  createFileParamNode([pathToSave '/base'],params,values,length(nodeOut));
 end
 
 createFileStimulus([pathToSave '/base'],[0:CL:CL*(numStim-1)],1,Imax);
@@ -28,7 +38,7 @@ while(abs(sim_stat.CV-CVControl)>CVError)
     createFileMaterial([pathToSave '/' Sigma_str],sim_stat.sigma,1,Cm);   
     createMainFile([pathToSave '/' Sigma_str],'main_file_Sigma', project, ...
                  ['Calculation of sigma for CV = ' num2str(CVControl) ' with Sigma = ' num2str(sim_stat.sigma)] ,...
-                 numStim*CL,dt,[],[],0,false,false);
+                 numStim*CL,dt,[],[],0,paramFile,false);
 
     cd([pathToSave '/' Sigma_str]);
     ! ./runelv 1 data/main_file_Sigma.dat post/Sigma_
