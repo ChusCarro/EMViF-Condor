@@ -1,4 +1,4 @@
-function createBaseFiles(pathToSave,mainElvira, sigma_L, Cm, cellType, nodes, step_save, nodeOut)
+function createBaseFiles(pathToSave,mainElvira, mpirunPath, sigma_L, Cm, cellType, nodes, step_save, nodeOut)
 
 [SUCCESS,MESSAGE] = mkdir(pathToSave);
 
@@ -10,7 +10,7 @@ if(isempty(dir([pathToSave '/base'])))
     mkdir([pathToSave '/base'])
     mkdir([pathToSave '/base/data'])
     mkdir([pathToSave '/base/post'])
-    createRunElv([pathToSave '/base'],mainElvira)
+    createRunElv([pathToSave '/base'],mainElvira, mpirunPath)
     createFileMaterial([pathToSave '/base'],sigma_L,1,Cm);
     createFilePropNod([pathToSave '/base'], cellType);
     createFilePropElement([pathToSave '/base']);
