@@ -1,4 +1,4 @@
-function sigma = calculateSigma(pathToSave, params, values, Imax, sigma_L, Cm, CVControl, CVError, numStim, CL, dt, nodeOut, dxOut, project)
+function sigma = calculateSigma(pathToSave, params, values, Imax, sigma_L, Cm, CVControl, CVError, numStim, CL, dt, nodes, nodeOut, dxOut, project)
 
 initialPath = pwd();
 
@@ -18,7 +18,7 @@ else
 end
 
 if(paramFile)
-  createFileParamNode([pathToSave '/base'],params,values,length(nodeOut));
+  createFileParamNode([pathToSave '/base'],params,values,length(nodes));
 end
 
 createFileStimulus([pathToSave '/base'],[0:CL:CL*(numStim-1)],1,Imax);
